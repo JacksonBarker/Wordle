@@ -1,10 +1,10 @@
 package ca.jacksonbarker;
 
-import java.util.Locale;
 import java.util.Scanner;
 import java.util.Random;
+import javax.swing.*;
 
-public class Main {
+public class Main extends JFrame{
 
     public static void main(String[] args) {
         Scanner scnr = new Scanner(System.in);
@@ -31,7 +31,7 @@ public class Main {
             System.out.println("");
 
             for (int i = 0; i < 6; i++) {
-                if (guesses[i].equals(word)) {
+                if (guesses[i] != null && guesses[i].equals(word)) {
                     System.out.println("You guessed the word!");
                     System.exit(0);
                 }
