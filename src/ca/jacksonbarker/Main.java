@@ -15,12 +15,13 @@ public class Main extends JFrame{
 
         JFrame game = new JFrame();
         game.setSize(gameWidth * 100, gameHeight * 100);
-        game.setTitle("Wordle");
+        game.setTitle("WORDLE");
         game.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         game.setLayout(new GridLayout(0, gameWidth));
         for (int i = 0; i < gameHeight; i++) {
             for (int j = 0; j < gameWidth; j++) {
                 grid[i][j] = new JLabel("", SwingConstants.CENTER);
+                grid[i][j].setFont(new Font("Comic Sans MS", Font.BOLD, 64));
                 grid[i][j].setOpaque(true);
                 game.add(grid[i][j]);
             }
