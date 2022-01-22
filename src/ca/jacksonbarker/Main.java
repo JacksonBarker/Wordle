@@ -58,6 +58,12 @@ public class Main extends JFrame{
             return false;
         }
 
+        for (int i = 0; i < word.length(); i++) {
+            if (!java.lang.Character.isLetter(word.charAt(i))) {
+                return false;
+            }
+        }
+
         for (int i = 0; i < WordList.wordList().length; i++) {
             if (word.equals(WordList.wordList()[i])) {
                 return true;
