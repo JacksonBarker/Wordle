@@ -1,5 +1,6 @@
 package ca.jacksonbarker;
 
+import java.awt.*;
 import java.util.Scanner;
 import java.util.Random;
 import javax.swing.*;
@@ -7,54 +8,72 @@ import javax.swing.*;
 public class Main extends JFrame{
 
     public static void main(String[] args) {
+        int gameWidth = 5;
+        int gameHeight = 6;
+
+        JLabel[][] grid = new JLabel[gameHeight][gameWidth];
+
+        JFrame game = new JFrame();
+        game.setSize(gameWidth * 100, gameHeight * 100);
+        game.setTitle("Wordle");
+        game.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        game.setLayout(new GridLayout(0, gameWidth));
+        for (int i = 0; i < gameHeight; i++) {
+            for (int j = 0; j < gameWidth; j++) {
+                grid[i][j] = new JLabel("", SwingConstants.CENTER);
+                grid[i][j].setOpaque(true);
+                game.add(grid[i][j]);
+            }
+        }
+        game.setVisible(true);
+
         Scanner scnr = new Scanner(System.in);
-        String[] guesses = new String[6];
+        String[] guesses = new String[gameHeight];
         String word = WordList.wordList()[new Random().nextInt(WordList.wordList().length)];
         String input;
 
-        while (guesses[5] == null) {
+        while (guesses[gameWidth] == null) {
             input = "";
 
-            while (!isValidWord(input)) {
-                System.out.println("Please enter a 5 letter word:");
+            while (!isValidWord(input, gameWidth)) {
+                System.out.println("Enter a 5 letter word:");
                 input = scnr.next().toLowerCase();
             }
 
-            for (int i = 0; i < 6; i++) {
+            for (int i = 0; i < gameHeight; i++) {
                 if (guesses[i] == null) {
                     guesses[i] = input;
                     input = null;
                 }
             }
 
-            printBoard(guesses);
-            System.out.println("");
+            for (int i = 0; i < gameHeight; i++) {
+                if (guesses[i] != null) {
+                    for (int j = 0; j < gameWidth; j++) {
+                        grid[i][j].setText(guesses[i].charAt(j) + "");
+                        if (word.charAt(j) == guesses[i].charAt(j)) {
+                            grid[i][j].setBackground(Color.green);
+                        } else {
+                            grid[i][j].setBackground(Color.gray);
+                        }
+                    }
+                }
+            }
 
-            for (int i = 0; i < 6; i++) {
+            for (int i = 0; i < gameHeight; i++) {
                 if (guesses[i] != null && guesses[i].equals(word)) {
-                    System.out.println("You guessed the word!");
+                    JOptionPane.showMessageDialog(game, "You guessed the Wordle!");
                     System.exit(0);
                 }
             }
         }
 
-        System.out.println("The word was: " + word);
-
+        JOptionPane.showMessageDialog(game, "The Wordle was: " + word);
+        System.exit(0);
     }
 
-    public static void printBoard(String[] guesses) {
-        System.out.println("");
-        for (int i = 0; i < 6; i++) {
-            if (guesses[i] != null) {
-                System.out.println(guesses[i]);
-            } else {
-                System.out.println("☐☐☐☐☐");
-            }
-        }
-    }
-
-    public static boolean isValidWord(String word) {
-        if (word.length() != 5) {
+    public static boolean isValidWord(String word, int gameWidth) {
+        if (word.length() != gameWidth) {
             return false;
         }
 
