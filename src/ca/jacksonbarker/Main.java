@@ -6,10 +6,12 @@ import java.awt.event.KeyListener;
 import java.util.Arrays;
 import java.util.Random;
 import javax.swing.*;
+import javax.swing.border.Border;
 
 public class Main extends JFrame implements KeyListener {
 
     public Main() {addKeyListener(this);}
+    public static final Main game = new Main();
 
     public static JLabel[][] grid = new JLabel[6][5];
 
@@ -22,16 +24,17 @@ public class Main extends JFrame implements KeyListener {
     public static String word = "hello";
 
     public static void main(String[] args) {
-        Main game = new Main();
         game.setSize(500, 600);
         game.setTitle("WORDLE");
         game.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         game.setLayout(new GridLayout(0, 5));
+        Border border = BorderFactory.createLineBorder(Color.gray, 2);
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 5; j++) {
                 grid[i][j] = new JLabel("", SwingConstants.CENTER);
-                grid[i][j].setFont(new Font("Comic Sans MS", Font.BOLD, 64));
+                grid[i][j].setFont(new Font("Arial Black", 0, 64));
                 grid[i][j].setOpaque(true);
+                grid[i][j].setBorder(border);
                 game.add(grid[i][j]);
             }
         }
@@ -165,6 +168,8 @@ public class Main extends JFrame implements KeyListener {
                         }
                     }
                     activeLine += 1;
+                } else {
+                    JOptionPane.showMessageDialog(game, "Not in word list");
                 }
                 break;
         }
