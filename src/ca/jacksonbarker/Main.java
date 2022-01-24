@@ -33,7 +33,7 @@ public class Main extends JFrame{
         String word = WordList.wordList()[new Random().nextInt(WordList.wordList().length)];
         String input;
 
-        while (guesses[gameWidth] == null) {
+        while (guesses[gameHeight - 1] == null) {
             input = "";
 
             while (!isValidWord(input, gameWidth)) {
