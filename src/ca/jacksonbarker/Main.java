@@ -1,11 +1,13 @@
 package ca.jacksonbarker;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.Scanner;
 import java.util.Random;
 import javax.swing.*;
 
-public class Main extends JFrame{
+public class Main extends JFrame implements KeyListener {
 
     public static void main(String[] args) {
         int gameWidth = 5;
@@ -30,8 +32,19 @@ public class Main extends JFrame{
 
         Scanner scnr = new Scanner(System.in);
         String[] guesses = new String[gameHeight];
-        String word = WordList.wordList()[new Random().nextInt(WordList.wordList().length)];
+        //String word = WordList.wordList()[new Random().nextInt(WordList.wordList().length)];
+        String word = "hello";
         String input;
+        int[] wordLetters = new int[26];
+        int[] inputLetters = new int[26];
+
+        for (int i = 0; i < gameWidth; i++) {
+            for (int j = 0; j < wordLetters.length; j++) {
+                if (word.charAt(i) == j + 97) {
+                    wordLetters[j] += 1;
+                }
+            }
+        }
 
         while (guesses[gameHeight - 1] == null) {
             input = "";
@@ -92,4 +105,17 @@ public class Main extends JFrame{
 
         return false;
     }
+
+    @Override
+    public void keyPressed(KeyEvent keyEvent) {
+       int key = keyEvent.getKeyCode();
+
+       
+    }
+
+    @Override
+    public void keyReleased(KeyEvent keyEvent) {}
+
+    @Override
+    public void keyTyped(KeyEvent keyEvent) {}
 }
