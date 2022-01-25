@@ -20,8 +20,8 @@ public class Main extends JFrame implements KeyListener {
     public static final int[] wordLetters = new int[26];
     public static int[] inputLetters = new int[26];
 
-    public static final String word = WordList.wordList(false, 'a')[new Random().nextInt(WordList.wordList(false, 'a').length)];
-    //public static String word = "hello";
+    //public static final String word = WordList.wordList(false, 'a')[new Random().nextInt(WordList.wordList(false, 'a').length)];
+    public static String word = "hello";
 
     public static void main(String[] args) {
         game.setSize(500, 600);
@@ -167,9 +167,17 @@ public class Main extends JFrame implements KeyListener {
                             grid[activeLine][i].setBackground(Color.lightGray);
                         }
                     }
+                    if ((grid[activeLine][0].getText() + grid[activeLine][1].getText() + grid[activeLine][2].getText() + grid[activeLine][3].getText() + grid[activeLine][4].getText()).equals(word)) {
+                        JOptionPane.showMessageDialog(game, "You guessed the Wordle!");
+                        System.exit(0);
+                    }
                     activeLine += 1;
                 } else {
-                    JOptionPane.showMessageDialog(game, "Not in word list");
+                    JOptionPane.showMessageDialog(game, "Not in word list.");
+                }
+                if (activeLine > 5) {
+                    JOptionPane.showMessageDialog(game, "The Wordle was: " + word);
+                    System.exit(0);
                 }
                 break;
         }
