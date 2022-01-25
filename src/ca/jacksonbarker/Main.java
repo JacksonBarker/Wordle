@@ -20,8 +20,8 @@ public class Main extends JFrame implements KeyListener {
     public static final int[] wordLetters = new int[26];
     public static int[] inputLetters = new int[26];
 
-    //public static final String word = WordList.wordList()[new Random().nextInt(WordList.wordList().length)];
-    public static String word = "hello";
+    public static final String word = WordList.wordList(false, 'a')[new Random().nextInt(WordList.wordList(false, 'a').length)];
+    //public static String word = "hello";
 
     public static void main(String[] args) {
         game.setSize(500, 600);
@@ -60,8 +60,8 @@ public class Main extends JFrame implements KeyListener {
             }
         }
 
-        for (int i = 0; i < WordList.wordList().length; i++) {
-            if (word.equals(WordList.wordList()[i])) {
+        for (int i = 0; i < WordList.wordList(false, 'a').length; i++) {
+            if (word.equals(WordList.wordList(false, 'a')[i])) {
                 return true;
             }
         }
