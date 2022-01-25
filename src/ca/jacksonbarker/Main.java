@@ -23,6 +23,7 @@ public class Main extends JFrame implements KeyListener {
     public static int activeLine = 0;
 
     public static void main(String[] args) {
+        System.out.println('A' + 0);
         System.arraycopy(wordAsArray(wordle), 0, wordleLetters, 0, 26);
         initGame();
     }
@@ -87,7 +88,7 @@ public class Main extends JFrame implements KeyListener {
         int[] wordLetters = new int[26];
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < wordLetters.length; j++) {
-                if (word.charAt(i) == j + 97) {
+                if (word.charAt(i) == j + 65) {
                     wordLetters[j] += 1;
                 }
             }
@@ -206,13 +207,13 @@ public class Main extends JFrame implements KeyListener {
                         cells[activeLine][i].setBackground(Color.lightGray);
                         if (cells[activeLine][i].getText().charAt(0) == wordle.charAt(i)) {
                             cells[activeLine][i].setBackground(Color.green);
-                            inputLetters[cells[activeLine][i].getText().charAt(0) - 97] -= 1;
+                            inputLetters[cells[activeLine][i].getText().charAt(0) - 65] -= 1;
                         }
                     }
                     for (int i = 0; i < cells[0].length; i++) {
-                        if (inputLetters[cells[activeLine][i].getText().charAt(0) - 97] > 0 && cells[activeLine][i].getBackground() != Color.green) {
+                        if (inputLetters[cells[activeLine][i].getText().charAt(0) - 65] > 0 && cells[activeLine][i].getBackground() != Color.green) {
                             cells[activeLine][i].setBackground(Color.yellow);
-                            inputLetters[cells[activeLine][i].getText().charAt(0) - 97] -= 1;
+                            inputLetters[cells[activeLine][i].getText().charAt(0) - 65] -= 1;
                         }
                     }
                     if ((cells[activeLine][0].getText() + cells[activeLine][1].getText() + cells[activeLine][2].getText() + cells[activeLine][3].getText() + cells[activeLine][4].getText()).equals(wordle)) {
