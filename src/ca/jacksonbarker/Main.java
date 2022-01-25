@@ -23,7 +23,6 @@ public class Main extends JFrame implements KeyListener {
     public static int activeLine = 0;
 
     public static void main(String[] args) {
-        System.out.println('A' + 0);
         System.arraycopy(wordAsArray(wordle), 0, wordleLetters, 0, 26);
         initGame();
     }
