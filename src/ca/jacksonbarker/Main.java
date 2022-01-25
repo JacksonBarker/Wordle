@@ -159,6 +159,7 @@ public class Main extends JFrame implements KeyListener {
                     for (int i = 0; i < grid[0].length; i++) {
                         if (grid[activeLine][i].getText().charAt(0) == word.charAt(i)) {
                             grid[activeLine][i].setBackground(Color.green);
+                            inputLetters[grid[activeLine][i].getText().charAt(0) - 97] -= 1;
                         } else if (inputLetters[grid[activeLine][i].getText().charAt(0) - 97] > 0) {
                             grid[activeLine][i].setBackground(Color.yellow);
                             inputLetters[grid[activeLine][i].getText().charAt(0) - 97] -= 1;
