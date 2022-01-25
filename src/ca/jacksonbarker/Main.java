@@ -119,100 +119,100 @@ public class Main extends JFrame implements KeyListener {
     public void keyPressed(KeyEvent keyEvent) {
         switch (keyEvent.getKeyCode()) {
             case KeyEvent.VK_A:
-                input('a');
+                input('A');
                 break;
             case KeyEvent.VK_B:
-                input('b');
+                input('B');
                 break;
             case KeyEvent.VK_C:
-                input('c');
+                input('C');
                 break;
             case KeyEvent.VK_D:
-                input('d');
+                input('D');
                 break;
             case KeyEvent.VK_E:
-                input('e');
+                input('E');
                 break;
             case KeyEvent.VK_F:
-                input('f');
+                input('F');
                 break;
             case KeyEvent.VK_G:
-                input('g');
+                input('G');
                 break;
             case KeyEvent.VK_H:
-                input('h');
+                input('H');
                 break;
             case KeyEvent.VK_I:
-                input('i');
+                input('I');
                 break;
             case KeyEvent.VK_J:
-                input('j');
+                input('J');
                 break;
             case KeyEvent.VK_K:
-                input('k');
+                input('K');
                 break;
             case KeyEvent.VK_L:
-                input('l');
+                input('L');
                 break;
             case KeyEvent.VK_M:
-                input('m');
+                input('M');
                 break;
             case KeyEvent.VK_N:
-                input('n');
+                input('N');
                 break;
             case KeyEvent.VK_O:
-                input('o');
+                input('O');
                 break;
             case KeyEvent.VK_P:
-                input('p');
+                input('P');
                 break;
             case KeyEvent.VK_Q:
-                input('q');
+                input('Q');
                 break;
             case KeyEvent.VK_R:
-                input('r');
+                input('R');
                 break;
             case KeyEvent.VK_S:
-                input('s');
+                input('S');
                 break;
             case KeyEvent.VK_T:
-                input('t');
+                input('T');
                 break;
             case KeyEvent.VK_U:
-                input('u');
+                input('U');
                 break;
             case KeyEvent.VK_V:
-                input('v');
+                input('V');
                 break;
             case KeyEvent.VK_W:
-                input('w');
+                input('W');
                 break;
             case KeyEvent.VK_X:
-                input('x');
+                input('X');
                 break;
             case KeyEvent.VK_Y:
-                input('y');
+                input('Y');
                 break;
             case KeyEvent.VK_Z:
-                input('z');
+                input('Z');
                 break;
             case KeyEvent.VK_BACK_SPACE:
                 backspace();
                 break;
             case KeyEvent.VK_ENTER:
                 System.arraycopy(wordleLetters, 0, inputLetters, 0, 26);
-                if (isValidWord((cells[activeLine][0].getText() + cells[activeLine][1].getText() + cells[activeLine][2].getText() + cells[activeLine][3].getText() + cells[activeLine][4].getText()).toLowerCase())) {
+                if (isValidWord(cells[activeLine][0].getText() + cells[activeLine][1].getText() + cells[activeLine][2].getText() + cells[activeLine][3].getText() + cells[activeLine][4].getText())) {
                     for (int i = 0; i < cells[0].length; i++) {
                         cells[activeLine][i].setBackground(Color.lightGray);
-                        if (Character.toLowerCase(cells[activeLine][i].getText().charAt(0)) == wordle.charAt(i)) {
+                        if (cells[activeLine][i].getText().charAt(0) == wordle.charAt(i)) {
                             cells[activeLine][i].setBackground(Color.green);
-                            inputLetters[Character.toLowerCase(cells[activeLine][i].getText().charAt(0)) - 97] -= 1;
+                            inputLetters[cells[activeLine][i].getText().charAt(0) - 97] -= 1;
                         }
                     }
                     for (int i = 0; i < cells[0].length; i++) {
-                        if (inputLetters[Character.toLowerCase(cells[activeLine][i].getText().charAt(0)) - 97] > 0 && cells[activeLine][i].getBackground() != Color.green) {
+                        if (inputLetters[cells[activeLine][i].getText().charAt(0) - 97] > 0 && cells[activeLine][i].getBackground() != Color.green) {
                             cells[activeLine][i].setBackground(Color.yellow);
-                            inputLetters[Character.toLowerCase(cells[activeLine][i].getText().charAt(0)) - 97] -= 1;
+                            inputLetters[cells[activeLine][i].getText().charAt(0) - 97] -= 1;
                         }
                     }
                     if ((cells[activeLine][0].getText() + cells[activeLine][1].getText() + cells[activeLine][2].getText() + cells[activeLine][3].getText() + cells[activeLine][4].getText()).equals(wordle)) {
@@ -238,7 +238,6 @@ public class Main extends JFrame implements KeyListener {
     public void keyTyped(KeyEvent keyEvent) {}
 
     public void input(char inputChar) {
-        inputChar = Character.toUpperCase(inputChar);
         if (cells[activeLine][0].getText().equals("")) {
             cells[activeLine][0].setText(String.valueOf(inputChar));
         } else if (cells[activeLine][1].getText().equals("")) {
