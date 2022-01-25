@@ -1,6 +1,8 @@
 package ca.jacksonbarker;
 
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Arrays;
@@ -15,7 +17,6 @@ public class Main extends JFrame implements KeyListener {
 
     public static JLabel[][] cells = new JLabel[6][5];
     public static JLabel[] keys = new JLabel[28];
-    public static String[] keyLabels = new String[]{""};
 
     public static int activeLine = 0;
 
@@ -27,12 +28,19 @@ public class Main extends JFrame implements KeyListener {
 
     public static void main(String[] args) {
         JPanel grid = new JPanel();
+        JPanel gridContainer = new JPanel();
         JPanel keyboard1 = new JPanel();
         JPanel keyboard2 = new JPanel();
-        
-        game.setSize(500, 600);
+
+        game.getContentPane().setLayout(new GridBagLayout());
+        game.setSize(500, 1000);
+        grid.setLayout(null);
+        grid.setPreferredSize(new Dimension(500, 600));
+        grid.setSize(new Dimension(500, 600));
+        game.setResizable(false);
         game.setTitle("WORDLE");
         game.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        game.setLayout(new GridLayout(0, 1));
         grid.setLayout(new GridLayout(0, 5));
         keyboard1.setLayout(new GridLayout(0, 10));
         keyboard2.setLayout(new GridLayout(0, 9));
@@ -47,23 +55,27 @@ public class Main extends JFrame implements KeyListener {
             }
         }
 
+        String[] keyLabels = new String[]{"Q","W","E","R","T","Y","U","I","O","P","A","S","D","F","G","H","J","K","L","⏎","Z","X","C","V","B","N","M","⌫"};
         for (int i = 0; i < 28; i++) {
-            if (i > 9) {
-                keys[i] = new JLabel("", SwingConstants.CENTER);
+            if (i < 10) {
+                keys[i] = new JLabel(keyLabels[i], SwingConstants.CENTER);
                 keys[i].setFont(new Font("Arial", 0, 32));
                 keys[i].setOpaque(true);
                 keys[i].setBorder(border);
                 keyboard1.add(keys[i]);
             } else {
-                keys[i] = new JLabel("", SwingConstants.CENTER);
+                keys[i] = new JLabel(keyLabels[i], SwingConstants.CENTER);
                 keys[i].setFont(new Font("Arial", 0, 32));
                 keys[i].setOpaque(true);
                 keys[i].setBorder(border);
-                keyboard1.add(keys[i]);
+                keyboard2.add(keys[i]);
             }
         }
 
-        game.add(grid);
+        game.add(gridContainer);
+        gridContainer.add(grid);
+        game.add(keyboard1);
+        game.add(keyboard2);
         game.setVisible(true);
 
         for (int i = 0; i < 5; i++) {
