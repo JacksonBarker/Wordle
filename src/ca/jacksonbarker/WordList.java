@@ -1,9 +1,5 @@
 package ca.jacksonbarker;
 
-import org.apache.commons.lang3.RandomUtils;
-
-import java.util.Random;
-
 import static org.apache.commons.lang3.ArrayUtils.addAll;
 
 public class WordList {
