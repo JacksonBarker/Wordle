@@ -207,7 +207,7 @@ public class Main extends JFrame implements KeyListener {
                             inputLetters[Character.toLowerCase(cells[activeLine][i].getText().charAt(0)) - 97] -= 1;
                         }
                     }
-                    if ((cells[activeLine][0].getText() + cells[activeLine][1].getText() + cells[activeLine][2].getText() + cells[activeLine][3].getText() + cells[activeLine][4].getText()).equals(word)) {
+                    if (((cells[activeLine][0].getText() + cells[activeLine][1].getText() + cells[activeLine][2].getText() + cells[activeLine][3].getText() + cells[activeLine][4].getText()).toLowerCase()).equals(word)) {
                         JOptionPane.showMessageDialog(game, "You guessed the Wordle!");
                         System.exit(0);
                     }
