@@ -202,7 +202,7 @@ public class Main extends JFrame implements KeyListener {
                         }
                     }
                     for (int i = 0; i < cells[0].length; i++) {
-                        if (inputLetters[Character.toLowerCase(cells[activeLine][i].getText().charAt(0)) - 97] > 0) {
+                        if (inputLetters[Character.toLowerCase(cells[activeLine][i].getText().charAt(0)) - 97] > 0 && cells[activeLine][i].getBackground() != Color.green) {
                             cells[activeLine][i].setBackground(Color.yellow);
                             inputLetters[Character.toLowerCase(cells[activeLine][i].getText().charAt(0)) - 97] -= 1;
                         }
