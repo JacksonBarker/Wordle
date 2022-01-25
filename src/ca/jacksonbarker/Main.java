@@ -60,8 +60,8 @@ public class Main extends JFrame implements KeyListener {
             }
         }
 
-        for (int i = 0; i < WordList.wordList(false, 'a').length; i++) {
-            if (word.equals(WordList.wordList(false, 'a')[i])) {
+        for (int i = 0; i < WordList.wordList(true, word.charAt(0)).length; i++) {
+            if (word.equals(WordList.wordList(true, word.charAt(0))[i])) {
                 return true;
             }
         }
