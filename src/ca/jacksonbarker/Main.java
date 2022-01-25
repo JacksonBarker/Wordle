@@ -13,7 +13,9 @@ public class Main extends JFrame implements KeyListener {
     public Main() {addKeyListener(this);}
     public static final Main game = new Main();
 
-    public static JLabel[][] grid = new JLabel[6][5];
+    public static JLabel[][] cells = new JLabel[6][5];
+    public static JLabel[] keys = new JLabel[28];
+    public static String[] keyLabels = new String[]{""};
 
     public static int activeLine = 0;
 
@@ -24,20 +26,44 @@ public class Main extends JFrame implements KeyListener {
     public static String word = "hello";
 
     public static void main(String[] args) {
+        JPanel grid = new JPanel();
+        JPanel keyboard1 = new JPanel();
+        JPanel keyboard2 = new JPanel();
+        
         game.setSize(500, 600);
         game.setTitle("WORDLE");
         game.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        game.setLayout(new GridLayout(0, 5));
+        grid.setLayout(new GridLayout(0, 5));
+        keyboard1.setLayout(new GridLayout(0, 10));
+        keyboard2.setLayout(new GridLayout(0, 9));
         Border border = BorderFactory.createLineBorder(Color.gray, 2);
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 5; j++) {
-                grid[i][j] = new JLabel("", SwingConstants.CENTER);
-                grid[i][j].setFont(new Font("Arial Black", 0, 64));
-                grid[i][j].setOpaque(true);
-                grid[i][j].setBorder(border);
-                game.add(grid[i][j]);
+                cells[i][j] = new JLabel("", SwingConstants.CENTER);
+                cells[i][j].setFont(new Font("Arial Black", 0, 64));
+                cells[i][j].setOpaque(true);
+                cells[i][j].setBorder(border);
+                grid.add(cells[i][j]);
             }
         }
+
+        for (int i = 0; i < 28; i++) {
+            if (i > 9) {
+                keys[i] = new JLabel("", SwingConstants.CENTER);
+                keys[i].setFont(new Font("Arial", 0, 32));
+                keys[i].setOpaque(true);
+                keys[i].setBorder(border);
+                keyboard1.add(keys[i]);
+            } else {
+                keys[i] = new JLabel("", SwingConstants.CENTER);
+                keys[i].setFont(new Font("Arial", 0, 32));
+                keys[i].setOpaque(true);
+                keys[i].setBorder(border);
+                keyboard1.add(keys[i]);
+            }
+        }
+
+        game.add(grid);
         game.setVisible(true);
 
         for (int i = 0; i < 5; i++) {
@@ -155,20 +181,21 @@ public class Main extends JFrame implements KeyListener {
                 break;
             case KeyEvent.VK_ENTER:
                 System.arraycopy(wordLetters, 0, inputLetters, 0, 26);
-                if (isValidWord(grid[activeLine][0].getText() + grid[activeLine][1].getText() + grid[activeLine][2].getText() + grid[activeLine][3].getText() + grid[activeLine][4].getText())) {
-                    for (int i = 0; i < grid[0].length; i++) {
-                        if (grid[activeLine][i].getText().charAt(0) == word.charAt(i)) {
-                            grid[activeLine][i].setBackground(Color.green);
-                            inputLetters[grid[activeLine][i].getText().charAt(0) - 97] -= 1;
-                        } else if (inputLetters[grid[activeLine][i].getText().charAt(0) - 97] > 0) {
-                            grid[activeLine][i].setBackground(Color.yellow);
-                            inputLetters[grid[activeLine][i].getText().charAt(0) - 97] -= 1;
-                        }
-                        else {
-                            grid[activeLine][i].setBackground(Color.lightGray);
+                if (isValidWord((cells[activeLine][0].getText() + cells[activeLine][1].getText() + cells[activeLine][2].getText() + cells[activeLine][3].getText() + cells[activeLine][4].getText()).toLowerCase())) {
+                    for (int i = 0; i < cells[0].length; i++) {
+                        cells[activeLine][i].setBackground(Color.lightGray);
+                        if (Character.toLowerCase(cells[activeLine][i].getText().charAt(0)) == word.charAt(i)) {
+                            cells[activeLine][i].setBackground(Color.green);
+                            inputLetters[Character.toLowerCase(cells[activeLine][i].getText().charAt(0)) - 97] -= 1;
                         }
                     }
-                    if ((grid[activeLine][0].getText() + grid[activeLine][1].getText() + grid[activeLine][2].getText() + grid[activeLine][3].getText() + grid[activeLine][4].getText()).equals(word)) {
+                    for (int i = 0; i < cells[0].length; i++) {
+                        if (inputLetters[Character.toLowerCase(cells[activeLine][i].getText().charAt(0)) - 97] > 0) {
+                            cells[activeLine][i].setBackground(Color.yellow);
+                            inputLetters[Character.toLowerCase(cells[activeLine][i].getText().charAt(0)) - 97] -= 1;
+                        }
+                    }
+                    if ((cells[activeLine][0].getText() + cells[activeLine][1].getText() + cells[activeLine][2].getText() + cells[activeLine][3].getText() + cells[activeLine][4].getText()).equals(word)) {
                         JOptionPane.showMessageDialog(game, "You guessed the Wordle!");
                         System.exit(0);
                     }
@@ -191,30 +218,31 @@ public class Main extends JFrame implements KeyListener {
     public void keyTyped(KeyEvent keyEvent) {}
 
     public void input(char inputChar) {
-        if (grid[activeLine][0].getText().equals("")) {
-            grid[activeLine][0].setText(String.valueOf(inputChar));
-        } else if (grid[activeLine][1].getText().equals("")) {
-            grid[activeLine][1].setText(String.valueOf(inputChar));
-        } else if (grid[activeLine][2].getText().equals("")) {
-            grid[activeLine][2].setText(String.valueOf(inputChar));
-        } else if (grid[activeLine][3].getText().equals("")) {
-            grid[activeLine][3].setText(String.valueOf(inputChar));
-        } else if (grid[activeLine][4].getText().equals("")) {
-            grid[activeLine][4].setText(String.valueOf(inputChar));
+        inputChar = Character.toUpperCase(inputChar);
+        if (cells[activeLine][0].getText().equals("")) {
+            cells[activeLine][0].setText(String.valueOf(inputChar));
+        } else if (cells[activeLine][1].getText().equals("")) {
+            cells[activeLine][1].setText(String.valueOf(inputChar));
+        } else if (cells[activeLine][2].getText().equals("")) {
+            cells[activeLine][2].setText(String.valueOf(inputChar));
+        } else if (cells[activeLine][3].getText().equals("")) {
+            cells[activeLine][3].setText(String.valueOf(inputChar));
+        } else if (cells[activeLine][4].getText().equals("")) {
+            cells[activeLine][4].setText(String.valueOf(inputChar));
         }
     }
 
     public void backspace() {
-        if (!grid[activeLine][4].getText().equals("")) {
-            grid[activeLine][4].setText("");
-        } else if (!grid[activeLine][3].getText().equals("")) {
-            grid[activeLine][3].setText("");
-        } else if (!grid[activeLine][2].getText().equals("")) {
-            grid[activeLine][2].setText("");
-        } else if (!grid[activeLine][1].getText().equals("")) {
-            grid[activeLine][1].setText("");
-        } else if (!grid[activeLine][0].getText().equals("")) {
-            grid[activeLine][0].setText("");
+        if (!cells[activeLine][4].getText().equals("")) {
+            cells[activeLine][4].setText("");
+        } else if (!cells[activeLine][3].getText().equals("")) {
+            cells[activeLine][3].setText("");
+        } else if (!cells[activeLine][2].getText().equals("")) {
+            cells[activeLine][2].setText("");
+        } else if (!cells[activeLine][1].getText().equals("")) {
+            cells[activeLine][1].setText("");
+        } else if (!cells[activeLine][0].getText().equals("")) {
+            cells[activeLine][0].setText("");
         }
     }
 }
