@@ -31,23 +31,25 @@ public class Main extends JFrame implements KeyListener {
         Border border = BorderFactory.createLineBorder(Color.gray, 2);
         String[] keyLabels = new String[]{"Q","W","E","R","T","Y","U","I","O","P","A","S","D","F","G","H","J","K","L","⏎","Z","X","C","V","B","N","M","⌫"};
 
+        JPanel container = new JPanel();
         JPanel grid = new JPanel();
-        JPanel gridContainer = new JPanel();
         JPanel keyboard1 = new JPanel();
         JPanel keyboard2 = new JPanel();
+        JPanel keyboard3 = new JPanel();
 
         game.getContentPane().setLayout(new GridBagLayout());
         grid.setLayout(null);
 
-        game.setSize(500, 1000);
+        game.setSize(500, 700);
         game.setResizable(false);
-        grid.setPreferredSize(new Dimension(500, 600));
-        grid.setSize(new Dimension(500, 600));
+        grid.setPreferredSize(new Dimension(400, 480));
+        grid.setSize(new Dimension(400, 480));
 
         game.setLayout(new GridLayout(0, 1));
         grid.setLayout(new GridLayout(0, 5));
         keyboard1.setLayout(new GridLayout(0, 10));
         keyboard2.setLayout(new GridLayout(0, 9));
+        keyboard3.setLayout(new GridLayout(0, 9));
 
         game.setTitle("WORDLE");
         game.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -69,16 +71,18 @@ public class Main extends JFrame implements KeyListener {
             keys[i].setBorder(border);
             if (i < 10) {
                 keyboard1.add(keys[i]);
-            } else {
+            } else if (i < 19){
                 keyboard2.add(keys[i]);
+            } else {
+                keyboard3.add(keys[i]);
             }
         }
 
-        game.add(gridContainer);
-        gridContainer.add(grid);
-
-        game.add(keyboard1);
-        game.add(keyboard2);
+        game.add(container);
+        container.add(grid);
+        container.add(keyboard1);
+        container.add(keyboard2);
+        container.add(keyboard3);
 
         game.setVisible(true);
     }
