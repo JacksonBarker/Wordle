@@ -327,7 +327,7 @@ public class Main extends JFrame implements KeyListener {
                         input('D');
                         break;
                     case ('E'):
-
+                        input('E');
                         break;
                     case ('F'):
                         input('F');
