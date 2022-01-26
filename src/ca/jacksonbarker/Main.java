@@ -20,6 +20,7 @@ public class Main extends JFrame implements KeyListener {
     public static int[] inputLetters = new int[26];
 
     public static int activeLine = 0;
+    public static int gameTime = 0;
 
     public static void main(String[] args) {
         System.arraycopy(wordAsArray(wordle), 0, wordleLetters, 0, 26);
@@ -278,7 +279,7 @@ public class Main extends JFrame implements KeyListener {
                 }
             }
             if ((cells[activeLine][0].getText() + cells[activeLine][1].getText() + cells[activeLine][2].getText() + cells[activeLine][3].getText() + cells[activeLine][4].getText()).equals(wordle)) {
-                JOptionPane.showMessageDialog(game, "You guessed the Wordle!");
+                JOptionPane.showMessageDialog(game, "You guessed the Wordle!\n You took " + gameTime + " seconds");
                 System.exit(0);
             }
             activeLine += 1;
@@ -287,10 +288,25 @@ public class Main extends JFrame implements KeyListener {
             JOptionPane.showMessageDialog(game, "Not in word list.");
         }
         if (activeLine > 5) {
-            JOptionPane.showMessageDialog(game, "The Wordle was: " + wordle);
+            JOptionPane.showMessageDialog(game, "The Wordle was: " + wordle + "\n You took " + gameTime + " seconds");
             System.exit(0);
         }
     }
+
+    Thread asyncTimer = new Thread(){
+        public void run(){
+            while (true) {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                gameTime += 1;
+            }
+        }
+    };
+
+
 
     public static void updateKeyboard() {
         int prevLine = activeLine - 1;
