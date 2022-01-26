@@ -28,7 +28,7 @@ public class Main extends JFrame implements KeyListener {
 
     public static void initGame() {
         Border border = BorderFactory.createLineBorder(Color.gray, 2);
-        String[] keyLabels = new String[]{"Q","W","E","R","T","Y","U","I","O","P","A","S","D","F","G","H","J","K","L","⌫","Z","X","C","V","B","N","M","⏎"};
+        String[] keyLabels = new String[]{"Q","W","E","R","T","Y","U","I","O","P","A","S","D","F","G","H","J","K","L","⏎","Z","X","C","V","B","N","M","⌫"};
 
         JPanel container = new JPanel();
         JPanel grid = new JPanel();
@@ -79,8 +79,10 @@ public class Main extends JFrame implements KeyListener {
             keys[i].setOpaque(true);
             keys[i].setBorder(border);
             keys[i].setBackground(Color.white);
-
-            if (i < 10) {
+            if (i == 19 || i == 27) {
+                keys[i].setFont(new Font("Segoe UI Emoji", 0, 24));
+                keyboard3.add(keys[i]);
+            } else if (i < 10) {
                 keys[i].setFont(new Font("Arial Black", 0, 32));
                 keyboard1.add(keys[i]);
             } else if (i < 19){
