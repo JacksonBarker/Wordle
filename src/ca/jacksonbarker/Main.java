@@ -44,6 +44,9 @@ public class Main extends JFrame implements KeyListener {
         game.setResizable(false);
         grid.setPreferredSize(new Dimension(400, 480));
         grid.setSize(new Dimension(400, 480));
+        keyboard1.setPreferredSize(new Dimension(380, 50));
+        keyboard2.setPreferredSize(new Dimension(342, 50));
+        keyboard3.setPreferredSize(new Dimension(360, 50));
 
         game.setLayout(new GridLayout(0, 1));
         grid.setLayout(new GridLayout(0, 5));
@@ -57,7 +60,7 @@ public class Main extends JFrame implements KeyListener {
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 5; j++) {
                 cells[i][j] = new JLabel("", SwingConstants.CENTER);
-                cells[i][j].setFont(new Font("Arial Black", 0, 64));
+                cells[i][j].setFont(new Font("Arial Black", 0, 48));
                 cells[i][j].setOpaque(true);
                 cells[i][j].setBorder(border);
                 grid.add(cells[i][j]);
