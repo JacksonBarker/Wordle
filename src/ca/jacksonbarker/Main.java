@@ -12,7 +12,7 @@ public class Main extends JFrame implements KeyListener {
     public static final Main game = new Main();
 
     public static JLabel[][] cells = new JLabel[6][5];
-    public static JLabel[] keys = new JLabel[26];
+    public static JLabel[] keys = new JLabel[28];
 
     public static final String wordle = WordList.wordList(false, 'a')[new Random().nextInt(WordList.wordList(false, 'a').length)];
 
@@ -28,7 +28,7 @@ public class Main extends JFrame implements KeyListener {
 
     public static void initGame() {
         Border border = BorderFactory.createLineBorder(Color.gray, 2);
-        String[] keyLabels = new String[]{"Q","W","E","R","T","Y","U","I","O","P","A","S","D","F","G","H","J","K","L","Z","X","C","V","B","N","M"};
+        String[] keyLabels = new String[]{"Q","W","E","R","T","Y","U","I","O","P","A","S","D","F","G","H","J","K","L","⌫","Z","X","C","V","B","N","M","⏎"};
 
         JPanel container = new JPanel();
         JPanel grid = new JPanel();
@@ -45,13 +45,13 @@ public class Main extends JFrame implements KeyListener {
         grid.setSize(new Dimension(400, 480));
         keyboard1.setPreferredSize(new Dimension(380, 50));
         keyboard2.setPreferredSize(new Dimension(342, 50));
-        keyboard3.setPreferredSize(new Dimension(266, 50));
+        keyboard3.setPreferredSize(new Dimension(342, 50));
 
         game.setLayout(new GridLayout(0, 1));
         grid.setLayout(new GridLayout(0, 5));
         keyboard1.setLayout(new GridLayout(0, 10));
         keyboard2.setLayout(new GridLayout(0, 9));
-        keyboard3.setLayout(new GridLayout(0, 7));
+        keyboard3.setLayout(new GridLayout(0, 9));
 
         container.setOpaque(true);
         container.setBackground(Color.white);
@@ -67,7 +67,7 @@ public class Main extends JFrame implements KeyListener {
             }
         }
 
-        for (int i = 0; i < 26; i++) {
+        for (int i = 0; i < 28; i++) {
             keys[i] = new JLabel(keyLabels[i], SwingConstants.CENTER);
             keys[i].addMouseListener(new MouseAdapter() {
                 @Override
@@ -245,7 +245,7 @@ public class Main extends JFrame implements KeyListener {
         }
     }
 
-    public void backspace() {
+    public static void backspace() {
         if (!cells[activeLine][4].getText().equals("")) {
             cells[activeLine][4].setText("");
         } else if (!cells[activeLine][3].getText().equals("")) {
@@ -259,7 +259,7 @@ public class Main extends JFrame implements KeyListener {
         }
     }
 
-    public void enter() {
+    public static void enter() {
         System.arraycopy(wordleLetters, 0, inputLetters, 0, 26);
         if (isValidWord(cells[activeLine][0].getText() + cells[activeLine][1].getText() + cells[activeLine][2].getText() + cells[activeLine][3].getText() + cells[activeLine][4].getText())) {
             for (int i = 0; i < cells[0].length; i++) {
@@ -325,7 +325,7 @@ public class Main extends JFrame implements KeyListener {
                         input('D');
                         break;
                     case ('E'):
-                        input('E');
+
                         break;
                     case ('F'):
                         input('F');
@@ -390,6 +390,13 @@ public class Main extends JFrame implements KeyListener {
                     case ('Z'):
                         input('Z');
                         break;
+                    case ('⌫'):
+                        backspace();
+                        break;
+                    case ('⏎'):
+                        enter();
+                        break;
+
                 }
             }
         }
