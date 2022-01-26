@@ -196,7 +196,6 @@ public class Main extends JFrame implements KeyListener {
                 break;
             case KeyEvent.VK_ENTER:
                 enter();
-                updateKeyboard();
                 break;
         }
     }
@@ -276,6 +275,7 @@ public class Main extends JFrame implements KeyListener {
                 System.exit(0);
             }
             activeLine += 1;
+            updateKeyboard();
         } else {
             JOptionPane.showMessageDialog(game, "Not in word list.");
         }
