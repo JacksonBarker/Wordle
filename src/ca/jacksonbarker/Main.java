@@ -1,8 +1,7 @@
 package ca.jacksonbarker;
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.*;
 import java.util.Random;
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -70,6 +69,12 @@ public class Main extends JFrame implements KeyListener {
 
         for (int i = 0; i < 26; i++) {
             keys[i] = new JLabel(keyLabels[i], SwingConstants.CENTER);
+            keys[i].addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    onMouseClicked(e);
+                }
+            });
 
             keys[i].setOpaque(true);
             keys[i].setBorder(border);
@@ -226,7 +231,7 @@ public class Main extends JFrame implements KeyListener {
         return false;
     }
 
-    public void input(char inputChar) {
+    public static void input(char inputChar) {
         if (cells[activeLine][0].getText().equals("")) {
             cells[activeLine][0].setText(String.valueOf(inputChar));
         } else if (cells[activeLine][1].getText().equals("")) {
@@ -297,6 +302,94 @@ public class Main extends JFrame implements KeyListener {
                 }
                 if (cells[prevLine][j].getBackground() == Color.green && cells[prevLine][j].getText().equals(keys[i].getText())) {
                     keys[i].setBackground(Color.green);
+                }
+            }
+        }
+    }
+
+    public static void onMouseClicked(MouseEvent mouseEvent) {
+        for (int i = 0; i < keys.length; i++) {
+            if (mouseEvent.getSource() == keys[i]) {
+                char keyClicked = keys[i].getText().charAt(0);
+                switch (keyClicked) {
+                    case ('A'):
+                        input('A');
+                        break;
+                    case ('B'):
+                        input('B');
+                        break;
+                    case ('C'):
+                        input('C');
+                        break;
+                    case ('D'):
+                        input('D');
+                        break;
+                    case ('E'):
+                        input('E');
+                        break;
+                    case ('F'):
+                        input('F');
+                        break;
+                    case ('G'):
+                        input('G');
+                        break;
+                    case ('H'):
+                        input('H');
+                        break;
+                    case ('I'):
+                        input('I');
+                        break;
+                    case ('J'):
+                        input('J');
+                        break;
+                    case ('K'):
+                        input('K');
+                        break;
+                    case ('L'):
+                        input('L');
+                        break;
+                    case ('M'):
+                        input('M');
+                        break;
+                    case ('N'):
+                        input('N');
+                        break;
+                    case ('O'):
+                        input('O');
+                        break;
+                    case ('P'):
+                        input('P');
+                        break;
+                    case ('Q'):
+                        input('Q');
+                        break;
+                    case ('R'):
+                        input('R');
+                        break;
+                    case ('S'):
+                        input('S');
+                        break;
+                    case ('T'):
+                        input('T');
+                        break;
+                    case ('U'):
+                        input('U');
+                        break;
+                    case ('V'):
+                        input('V');
+                        break;
+                    case ('W'):
+                        input('W');
+                        break;
+                    case ('X'):
+                        input('X');
+                        break;
+                    case ('Y'):
+                        input('Y');
+                        break;
+                    case ('Z'):
+                        input('Z');
+                        break;
                 }
             }
         }
