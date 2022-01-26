@@ -13,7 +13,7 @@ public class Main extends JFrame implements KeyListener {
     public static final Main game = new Main();
 
     public static JLabel[][] cells = new JLabel[6][5];
-    public static JLabel[] keys = new JLabel[28];
+    public static JLabel[] keys = new JLabel[26];
 
     public static final String wordle = WordList.wordList(false, 'a')[new Random().nextInt(WordList.wordList(false, 'a').length)];
 
@@ -29,7 +29,7 @@ public class Main extends JFrame implements KeyListener {
 
     public static void initGame() {
         Border border = BorderFactory.createLineBorder(Color.gray, 2);
-        String[] keyLabels = new String[]{"Q","W","E","R","T","Y","U","I","O","P","A","S","D","F","G","H","J","K","L","⏎","Z","X","C","V","B","N","M","⌫"};
+        String[] keyLabels = new String[]{"Q","W","E","R","T","Y","U","I","O","P","A","S","D","F","G","H","J","K","L","Z","X","C","V","B","N","M"};
 
         JPanel container = new JPanel();
         JPanel grid = new JPanel();
@@ -46,37 +46,43 @@ public class Main extends JFrame implements KeyListener {
         grid.setSize(new Dimension(400, 480));
         keyboard1.setPreferredSize(new Dimension(380, 50));
         keyboard2.setPreferredSize(new Dimension(342, 50));
-        keyboard3.setPreferredSize(new Dimension(360, 50));
+        keyboard3.setPreferredSize(new Dimension(266, 50));
 
         game.setLayout(new GridLayout(0, 1));
         grid.setLayout(new GridLayout(0, 5));
         keyboard1.setLayout(new GridLayout(0, 10));
         keyboard2.setLayout(new GridLayout(0, 9));
-        keyboard3.setLayout(new GridLayout(0, 9));
+        keyboard3.setLayout(new GridLayout(0, 7));
 
-        game.setTitle("WORDLE");
-        game.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        container.setOpaque(true);
+        container.setBackground(Color.white);
 
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 5; j++) {
                 cells[i][j] = new JLabel("", SwingConstants.CENTER);
                 cells[i][j].setFont(new Font("Arial Black", 0, 48));
                 cells[i][j].setOpaque(true);
+                cells[i][j].setBackground(Color.white);
                 cells[i][j].setBorder(border);
                 grid.add(cells[i][j]);
             }
         }
 
-        for (int i = 0; i < 28; i++) {
+        for (int i = 0; i < 26; i++) {
             keys[i] = new JLabel(keyLabels[i], SwingConstants.CENTER);
-            keys[i].setFont(new Font("Arial Black", 0, 32));
+
             keys[i].setOpaque(true);
             keys[i].setBorder(border);
+            keys[i].setBackground(Color.white);
+
             if (i < 10) {
+                keys[i].setFont(new Font("Arial Black", 0, 32));
                 keyboard1.add(keys[i]);
             } else if (i < 19){
+                keys[i].setFont(new Font("Arial Black", 0, 32));
                 keyboard2.add(keys[i]);
             } else {
+                keys[i].setFont(new Font("Arial Black", 0, 32));
                 keyboard3.add(keys[i]);
             }
         }
@@ -87,6 +93,8 @@ public class Main extends JFrame implements KeyListener {
         container.add(keyboard2);
         container.add(keyboard3);
 
+        game.setTitle("WORDLE");
+        game.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         game.setVisible(true);
     }
 
@@ -100,26 +108,6 @@ public class Main extends JFrame implements KeyListener {
             }
         }
         return wordLetters;
-    }
-
-    public static boolean isValidWord(String word) {
-        if (word.length() != 5) {
-            return false;
-        }
-
-        for (int i = 0; i < word.length(); i++) {
-            if (!java.lang.Character.isLetter(word.charAt(i))) {
-                return false;
-            }
-        }
-
-        for (int i = 0; i < WordList.wordList(true, word.charAt(0)).length; i++) {
-            if (word.equals(WordList.wordList(true, word.charAt(0))[i])) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     @Override
@@ -207,33 +195,8 @@ public class Main extends JFrame implements KeyListener {
                 backspace();
                 break;
             case KeyEvent.VK_ENTER:
-                System.arraycopy(wordleLetters, 0, inputLetters, 0, 26);
-                if (isValidWord(cells[activeLine][0].getText() + cells[activeLine][1].getText() + cells[activeLine][2].getText() + cells[activeLine][3].getText() + cells[activeLine][4].getText())) {
-                    for (int i = 0; i < cells[0].length; i++) {
-                        cells[activeLine][i].setBackground(Color.lightGray);
-                        if (cells[activeLine][i].getText().charAt(0) == wordle.charAt(i)) {
-                            cells[activeLine][i].setBackground(Color.green);
-                            inputLetters[cells[activeLine][i].getText().charAt(0) - 65] -= 1;
-                        }
-                    }
-                    for (int i = 0; i < cells[0].length; i++) {
-                        if (inputLetters[cells[activeLine][i].getText().charAt(0) - 65] > 0 && cells[activeLine][i].getBackground() != Color.green) {
-                            cells[activeLine][i].setBackground(Color.yellow);
-                            inputLetters[cells[activeLine][i].getText().charAt(0) - 65] -= 1;
-                        }
-                    }
-                    if ((cells[activeLine][0].getText() + cells[activeLine][1].getText() + cells[activeLine][2].getText() + cells[activeLine][3].getText() + cells[activeLine][4].getText()).equals(wordle)) {
-                        JOptionPane.showMessageDialog(game, "You guessed the Wordle!");
-                        System.exit(0);
-                    }
-                    activeLine += 1;
-                } else {
-                    JOptionPane.showMessageDialog(game, "Not in word list.");
-                }
-                if (activeLine > 5) {
-                    JOptionPane.showMessageDialog(game, "The Wordle was: " + wordle);
-                    System.exit(0);
-                }
+                enter();
+                updateKeyboard();
                 break;
         }
     }
@@ -243,6 +206,26 @@ public class Main extends JFrame implements KeyListener {
 
     @Override
     public void keyTyped(KeyEvent keyEvent) {}
+
+    public static boolean isValidWord(String word) {
+        if (word.length() != 5) {
+            return false;
+        }
+
+        for (int i = 0; i < word.length(); i++) {
+            if (!java.lang.Character.isLetter(word.charAt(i))) {
+                return false;
+            }
+        }
+
+        for (int i = 0; i < WordList.wordList(true, word.charAt(0)).length; i++) {
+            if (word.equals(WordList.wordList(true, word.charAt(0))[i])) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     public void input(char inputChar) {
         if (cells[activeLine][0].getText().equals("")) {
@@ -269,6 +252,53 @@ public class Main extends JFrame implements KeyListener {
             cells[activeLine][1].setText("");
         } else if (!cells[activeLine][0].getText().equals("")) {
             cells[activeLine][0].setText("");
+        }
+    }
+
+    public void enter() {
+        System.arraycopy(wordleLetters, 0, inputLetters, 0, 26);
+        if (isValidWord(cells[activeLine][0].getText() + cells[activeLine][1].getText() + cells[activeLine][2].getText() + cells[activeLine][3].getText() + cells[activeLine][4].getText())) {
+            for (int i = 0; i < cells[0].length; i++) {
+                cells[activeLine][i].setBackground(Color.lightGray);
+                if (cells[activeLine][i].getText().charAt(0) == wordle.charAt(i)) {
+                    cells[activeLine][i].setBackground(Color.green);
+                    inputLetters[cells[activeLine][i].getText().charAt(0) - 65] -= 1;
+                }
+            }
+            for (int i = 0; i < cells[0].length; i++) {
+                if (inputLetters[cells[activeLine][i].getText().charAt(0) - 65] > 0 && cells[activeLine][i].getBackground() != Color.green) {
+                    cells[activeLine][i].setBackground(Color.yellow);
+                    inputLetters[cells[activeLine][i].getText().charAt(0) - 65] -= 1;
+                }
+            }
+            if ((cells[activeLine][0].getText() + cells[activeLine][1].getText() + cells[activeLine][2].getText() + cells[activeLine][3].getText() + cells[activeLine][4].getText()).equals(wordle)) {
+                JOptionPane.showMessageDialog(game, "You guessed the Wordle!");
+                System.exit(0);
+            }
+            activeLine += 1;
+        } else {
+            JOptionPane.showMessageDialog(game, "Not in word list.");
+        }
+        if (activeLine > 5) {
+            JOptionPane.showMessageDialog(game, "The Wordle was: " + wordle);
+            System.exit(0);
+        }
+    }
+
+    public static void updateKeyboard() {
+        int prevLine = activeLine - 1;
+        for (int i = 0; i < keys.length; i++) {
+            for (int j = 0; j < cells[0].length; j++) {
+                if (cells[prevLine][j].getBackground() == Color.lightGray && cells[prevLine][j].getText().equals(keys[i].getText()) && keys[i].getBackground() != Color.yellow && keys[i].getBackground() != Color.green) {
+                    keys[i].setBackground(Color.lightGray);
+                }
+                if (cells[prevLine][j].getBackground() == Color.yellow && cells[prevLine][j].getText().equals(keys[i].getText()) && keys[i].getBackground() != Color.green) {
+                    keys[i].setBackground(Color.yellow);
+                }
+                if (cells[prevLine][j].getBackground() == Color.green && cells[prevLine][j].getText().equals(keys[i].getText())) {
+                    keys[i].setBackground(Color.green);
+                }
+            }
         }
     }
 }
