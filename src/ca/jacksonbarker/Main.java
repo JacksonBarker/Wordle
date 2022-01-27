@@ -14,7 +14,8 @@ public class Main extends JFrame implements KeyListener {
     public static JLabel[][] cells = new JLabel[6][5];
     public static JLabel[] keys = new JLabel[28];
 
-    public static final String wordle = WordList.wordList(false, 'a')[new Random().nextInt(WordList.wordList(false, 'a').length)];
+    //public static final String wordle = WordList.wordList(false, 'a')[new Random().nextInt(WordList.wordList(false, 'a').length)];
+    public static String wordle = "HELLO";
 
     public static final int[] wordleLetters = new int[26];
     public static int[] inputLetters = new int[26];
@@ -22,7 +23,21 @@ public class Main extends JFrame implements KeyListener {
     public static int activeLine = 0;
     public static int gameTime = 0;
 
+    public static Thread asyncTimer = new Thread(){
+        public void run(){
+            while (true) {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                gameTime += 1;
+            }
+        }
+    };
+
     public static void main(String[] args) {
+        asyncTimer.start();
         System.arraycopy(wordAsArray(wordle), 0, wordleLetters, 0, 26);
         initGame();
     }
@@ -118,102 +133,6 @@ public class Main extends JFrame implements KeyListener {
         return wordLetters;
     }
 
-    @Override
-    public void keyPressed(KeyEvent keyEvent) {
-        switch (keyEvent.getKeyCode()) {
-            case KeyEvent.VK_A:
-                input('A');
-                break;
-            case KeyEvent.VK_B:
-                input('B');
-                break;
-            case KeyEvent.VK_C:
-                input('C');
-                break;
-            case KeyEvent.VK_D:
-                input('D');
-                break;
-            case KeyEvent.VK_E:
-                input('E');
-                break;
-            case KeyEvent.VK_F:
-                input('F');
-                break;
-            case KeyEvent.VK_G:
-                input('G');
-                break;
-            case KeyEvent.VK_H:
-                input('H');
-                break;
-            case KeyEvent.VK_I:
-                input('I');
-                break;
-            case KeyEvent.VK_J:
-                input('J');
-                break;
-            case KeyEvent.VK_K:
-                input('K');
-                break;
-            case KeyEvent.VK_L:
-                input('L');
-                break;
-            case KeyEvent.VK_M:
-                input('M');
-                break;
-            case KeyEvent.VK_N:
-                input('N');
-                break;
-            case KeyEvent.VK_O:
-                input('O');
-                break;
-            case KeyEvent.VK_P:
-                input('P');
-                break;
-            case KeyEvent.VK_Q:
-                input('Q');
-                break;
-            case KeyEvent.VK_R:
-                input('R');
-                break;
-            case KeyEvent.VK_S:
-                input('S');
-                break;
-            case KeyEvent.VK_T:
-                input('T');
-                break;
-            case KeyEvent.VK_U:
-                input('U');
-                break;
-            case KeyEvent.VK_V:
-                input('V');
-                break;
-            case KeyEvent.VK_W:
-                input('W');
-                break;
-            case KeyEvent.VK_X:
-                input('X');
-                break;
-            case KeyEvent.VK_Y:
-                input('Y');
-                break;
-            case KeyEvent.VK_Z:
-                input('Z');
-                break;
-            case KeyEvent.VK_BACK_SPACE:
-                backspace();
-                break;
-            case KeyEvent.VK_ENTER:
-                enter();
-                break;
-        }
-    }
-
-    @Override
-    public void keyReleased(KeyEvent keyEvent) {}
-
-    @Override
-    public void keyTyped(KeyEvent keyEvent) {}
-
     public static boolean isValidWord(String word) {
         if (word.length() != 5) {
             return false;
@@ -232,6 +151,46 @@ public class Main extends JFrame implements KeyListener {
         }
 
         return false;
+    }
+
+    public static void enter() {
+        System.arraycopy(wordleLetters, 0, inputLetters, 0, 26);
+        if (isValidWord(cells[activeLine][0].getText() + cells[activeLine][1].getText() + cells[activeLine][2].getText() + cells[activeLine][3].getText() + cells[activeLine][4].getText())) {
+            for (int i = 0; i < cells[0].length; i++) {
+                cells[activeLine][i].setBackground(Color.lightGray);
+                if (cells[activeLine][i].getText().charAt(0) == wordle.charAt(i)) {
+                    cells[activeLine][i].setBackground(Color.green);
+                    inputLetters[cells[activeLine][i].getText().charAt(0) - 65] -= 1;
+                }
+            }
+            for (int i = 0; i < cells[0].length; i++) {
+                if (inputLetters[cells[activeLine][i].getText().charAt(0) - 65] > 0 && cells[activeLine][i].getBackground() != Color.green) {
+                    cells[activeLine][i].setBackground(Color.yellow);
+                    inputLetters[cells[activeLine][i].getText().charAt(0) - 65] -= 1;
+                }
+            }
+            if ((cells[activeLine][0].getText() + cells[activeLine][1].getText() + cells[activeLine][2].getText() + cells[activeLine][3].getText() + cells[activeLine][4].getText()).equals(wordle)) {
+                int minutes = gameTime / 60;
+                int seconds = gameTime % 60;
+                int guesses = activeLine + 1;
+                if (guesses != 1) {
+                    JOptionPane.showMessageDialog(game, String.format("You guessed the Wordle!\nYou took %d:%02d.\nYou made %d guesses.", minutes, seconds, guesses));
+                } else {
+                    JOptionPane.showMessageDialog(game, String.format("You guessed the Wordle!\nYou took %d:%02d.\nYou made %d guess.", minutes, seconds, guesses));
+                }
+                System.exit(0);
+            }
+            activeLine += 1;
+            updateKeyboard();
+        } else {
+            JOptionPane.showMessageDialog(game, "Not in word list.");
+        }
+        if (activeLine > 5) {
+            int minutes = gameTime / 60;
+            int seconds = gameTime % 60;
+            JOptionPane.showMessageDialog(game, String.format("The Wordle was %s\nYou took %d:%02d.", wordle, minutes, seconds));
+            System.exit(0);
+        }
     }
 
     public static void input(char inputChar) {
@@ -261,52 +220,6 @@ public class Main extends JFrame implements KeyListener {
             cells[activeLine][0].setText("");
         }
     }
-
-    public static void enter() {
-        System.arraycopy(wordleLetters, 0, inputLetters, 0, 26);
-        if (isValidWord(cells[activeLine][0].getText() + cells[activeLine][1].getText() + cells[activeLine][2].getText() + cells[activeLine][3].getText() + cells[activeLine][4].getText())) {
-            for (int i = 0; i < cells[0].length; i++) {
-                cells[activeLine][i].setBackground(Color.lightGray);
-                if (cells[activeLine][i].getText().charAt(0) == wordle.charAt(i)) {
-                    cells[activeLine][i].setBackground(Color.green);
-                    inputLetters[cells[activeLine][i].getText().charAt(0) - 65] -= 1;
-                }
-            }
-            for (int i = 0; i < cells[0].length; i++) {
-                if (inputLetters[cells[activeLine][i].getText().charAt(0) - 65] > 0 && cells[activeLine][i].getBackground() != Color.green) {
-                    cells[activeLine][i].setBackground(Color.yellow);
-                    inputLetters[cells[activeLine][i].getText().charAt(0) - 65] -= 1;
-                }
-            }
-            if ((cells[activeLine][0].getText() + cells[activeLine][1].getText() + cells[activeLine][2].getText() + cells[activeLine][3].getText() + cells[activeLine][4].getText()).equals(wordle)) {
-                JOptionPane.showMessageDialog(game, "You guessed the Wordle!\n You took " + gameTime + " seconds");
-                System.exit(0);
-            }
-            activeLine += 1;
-            updateKeyboard();
-        } else {
-            JOptionPane.showMessageDialog(game, "Not in word list.");
-        }
-        if (activeLine > 5) {
-            JOptionPane.showMessageDialog(game, "The Wordle was: " + wordle + "\n You took " + gameTime + " seconds");
-            System.exit(0);
-        }
-    }
-
-    Thread asyncTimer = new Thread(){
-        public void run(){
-            while (true) {
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                gameTime += 1;
-            }
-        }
-    };
-
-
 
     public static void updateKeyboard() {
         int prevLine = activeLine - 1;
@@ -419,4 +332,101 @@ public class Main extends JFrame implements KeyListener {
             }
         }
     }
+
+    @Override
+    public void keyPressed(KeyEvent keyEvent) {
+        switch (keyEvent.getKeyCode()) {
+            case KeyEvent.VK_A:
+                input('A');
+                break;
+            case KeyEvent.VK_B:
+                input('B');
+                break;
+            case KeyEvent.VK_C:
+                input('C');
+                break;
+            case KeyEvent.VK_D:
+                input('D');
+                break;
+            case KeyEvent.VK_E:
+                input('E');
+                break;
+            case KeyEvent.VK_F:
+                input('F');
+                break;
+            case KeyEvent.VK_G:
+                input('G');
+                break;
+            case KeyEvent.VK_H:
+                input('H');
+                break;
+            case KeyEvent.VK_I:
+                input('I');
+                break;
+            case KeyEvent.VK_J:
+                input('J');
+                break;
+            case KeyEvent.VK_K:
+                input('K');
+                break;
+            case KeyEvent.VK_L:
+                input('L');
+                break;
+            case KeyEvent.VK_M:
+                input('M');
+                break;
+            case KeyEvent.VK_N:
+                input('N');
+                break;
+            case KeyEvent.VK_O:
+                input('O');
+                break;
+            case KeyEvent.VK_P:
+                input('P');
+                break;
+            case KeyEvent.VK_Q:
+                input('Q');
+                break;
+            case KeyEvent.VK_R:
+                input('R');
+                break;
+            case KeyEvent.VK_S:
+                input('S');
+                break;
+            case KeyEvent.VK_T:
+                input('T');
+                break;
+            case KeyEvent.VK_U:
+                input('U');
+                break;
+            case KeyEvent.VK_V:
+                input('V');
+                break;
+            case KeyEvent.VK_W:
+                input('W');
+                break;
+            case KeyEvent.VK_X:
+                input('X');
+                break;
+            case KeyEvent.VK_Y:
+                input('Y');
+                break;
+            case KeyEvent.VK_Z:
+                input('Z');
+                break;
+            case KeyEvent.VK_BACK_SPACE:
+                backspace();
+                break;
+            case KeyEvent.VK_ENTER:
+                enter();
+                break;
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent keyEvent) {}
+
+    @Override
+    public void keyTyped(KeyEvent keyEvent) {}
+
 }
