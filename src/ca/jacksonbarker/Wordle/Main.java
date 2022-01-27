@@ -1,10 +1,12 @@
-package ca.jacksonbarker;
+package ca.jacksonbarker.Wordle;
 
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Random;
 import javax.swing.*;
 import javax.swing.border.Border;
+
+import static ca.jacksonbarker.Wordle.WordList.wordList;
 
 public class Main extends JFrame implements KeyListener {
 
@@ -144,7 +146,7 @@ public class Main extends JFrame implements KeyListener {
             }
         }
 
-        for (int i = 0; i < WordList.wordList(true, word.charAt(0)).length; i++) {
+        for (int i = 0; i < wordList(true, word.charAt(0)).length; i++) {
             if (word.equals(WordList.wordList(true, word.charAt(0))[i])) {
                 return true;
             }

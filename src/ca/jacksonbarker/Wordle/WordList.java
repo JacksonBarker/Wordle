@@ -1,4 +1,4 @@
-package ca.jacksonbarker;
+package ca.jacksonbarker.Wordle;
 
 import static org.apache.commons.lang3.ArrayUtils.addAll;
 
