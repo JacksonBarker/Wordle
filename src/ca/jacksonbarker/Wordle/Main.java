@@ -16,8 +16,7 @@ public class Main extends JFrame implements KeyListener {
     public static JLabel[][] cells = new JLabel[6][5];
     public static JLabel[] keys = new JLabel[28];
 
-    //public static final String wordle = WordList.wordList(false, 'a')[new Random().nextInt(WordList.wordList(false, 'a').length)];
-    public static String wordle = "HELLO";
+    public static final String wordle = WordList.wordList(false, 'a')[new Random().nextInt(WordList.wordList(false, 'a').length)];
 
     public static final int[] wordleLetters = new int[26];
     public static int[] inputLetters = new int[26];
