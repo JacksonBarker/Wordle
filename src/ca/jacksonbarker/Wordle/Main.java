@@ -22,8 +22,7 @@ public class Main extends JFrame implements KeyListener {
     public static JLabel[] keys = new JLabel[28];
 
     // Generates random word
-    public static final String wordle = WordList.wordList(false, 'a')[new Random()
-            .nextInt(WordList.wordList(false, 'a').length)]; // Generates Random Wordle From Wordlist
+    public static final String wordle = WordList.wordList(false, 'a')[new Random().nextInt(WordList.wordList(false, 'a').length)];
 
     // Word letter arrays for yellow letters
     public static final int[] wordleLetters = new int[26];
@@ -86,8 +85,7 @@ public class Main extends JFrame implements KeyListener {
      */
     public static void initGame() {
         Border border = BorderFactory.createLineBorder(Color.gray, 2);
-        String[] keyLabels = new String[] { "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "A", "S", "D", "F", "G",
-                "H", "J", "K", "L", "⏎", "Z", "X", "C", "V", "B", "N", "M", "⌫" };
+        String[] keyLabels = new String[] { "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "A", "S", "D", "F", "G","H", "J", "K", "L", "⏎", "Z", "X", "C", "V", "B", "N", "M", "⌫" };
 
         JPanel container = new JPanel();
         JPanel grid = new JPanel();
@@ -190,9 +188,7 @@ public class Main extends JFrame implements KeyListener {
         }
 
         for (int i = 0; i < wordList(true, word.charAt(0)).length; i++) {
-            if (word.equals(WordList.wordList(true, word.charAt(0))[i])) { // Checks if Input is on Wordlist Based on
-                                                                           // First Letter of Word (word with first
-                                                                           // letter 'A' only checks list of 'A' words)
+            if (word.equals(WordList.wordList(true, word.charAt(0))[i])) { // Checks if Input is on Wordlist Based on first Letter of Word (word with first letter 'A' only checks list of 'A' words)
                 return true;
             }
         }
@@ -211,8 +207,7 @@ public class Main extends JFrame implements KeyListener {
                     inputLetters[cells[activeLine][i].getText().charAt(0) - 65] -= 1;
                 }
             }
-            for (int i = 0; i < cells[0].length; i++) { // Changes Box to Yellow if Wordle Contains Inputted Character
-                                                        // But is in Wrong Spot
+            for (int i = 0; i < cells[0].length; i++) { // Changes Box to Yellow if Wordle Contains Inputted Character but is in Wrong Spot
                 if (inputLetters[cells[activeLine][i].getText().charAt(0) - 65] > 0
                         && cells[activeLine][i].getBackground() != Color.green) {
                     cells[activeLine][i].setBackground(Color.yellow);
@@ -220,9 +215,7 @@ public class Main extends JFrame implements KeyListener {
                 }
             }
             if ((cells[activeLine][0].getText() + cells[activeLine][1].getText() + cells[activeLine][2].getText()
-                    + cells[activeLine][3].getText() + cells[activeLine][4].getText()).equals(wordle)) { // Win if Input
-                                                                                                         // is Equal to
-                                                                                                         // Wordle
+                    + cells[activeLine][3].getText() + cells[activeLine][4].getText()).equals(wordle)) { // Win if Input is Equal to Wordle
                 int minutes = gameTime / 60;
                 int seconds = gameTime % 60;
                 int guesses = activeLine + 1;
