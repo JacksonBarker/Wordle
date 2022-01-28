@@ -16,19 +16,19 @@ public class Main extends JFrame implements KeyListener {
     public static JLabel[][] cells = new JLabel[6][5];
     public static JLabel[] keys = new JLabel[28];
 
-    public static final String wordle = WordList.wordList(false, 'a')[new Random().nextInt(WordList.wordList(false, 'a').length)];
+    public static final String wordle = WordList.wordList(false, 'a')[new Random().nextInt(WordList.wordList(false, 'a').length)]; //Generates Random Wordle From Wordlist
 
     public static final int[] wordleLetters = new int[26];
     public static int[] inputLetters = new int[26];
 
     public static int activeLine = 0;
-    public static int gameTime = 0;
-
+    public static int gameTime = 0; //initialises gameTime for Timer Thread
+    //Creates Second Thread For Game Timer
     public static Thread asyncTimer = new Thread(){
         public void run(){
             while (true) {
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(1000); //Pause Thread For 1 second
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -83,13 +83,13 @@ public class Main extends JFrame implements KeyListener {
                 grid.add(cells[i][j]);
             }
         }
-
-        for (int i = 0; i < 28; i++) {
+        //Draws OnScreen Keyboard
+        for (int i = 0; i < 28; i++) { //Draws 28 Boxes With Displayed Character For Keyboard
             keys[i] = new JLabel(keyLabels[i], SwingConstants.CENTER);
             keys[i].addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    onMouseClicked(e);
+                    onMouseClicked(e); //Adds MouseListener to Keyboxes so They May be Clicked for input
                 }
             });
 
@@ -97,7 +97,7 @@ public class Main extends JFrame implements KeyListener {
             keys[i].setBorder(border);
             keys[i].setBackground(Color.white);
             if (i == 19 || i == 27) {
-                keys[i].setFont(new Font("Segoe UI Emoji", 0, 24));
+                keys[i].setFont(new Font("Segoe UI Emoji", 0, 24)); //Font for Backspace and Return Character
                 keyboard3.add(keys[i]);
             } else if (i < 10) {
                 keys[i].setFont(new Font("Arial Black", 0, 32));
@@ -117,11 +117,11 @@ public class Main extends JFrame implements KeyListener {
         container.add(keyboard2);
         container.add(keyboard3);
 
-        game.setTitle("WORDLE");
+        game.setTitle("WORDLE"); //Sets Name of Game Window to Wordle
         game.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         game.setVisible(true);
     }
-
+    //Counts Number Each Letter in The Wordle
     public static int[] wordAsArray(String word) {
         int[] wordLetters = new int[26];
         for (int i = 0; i < 5; i++) {
@@ -133,20 +133,20 @@ public class Main extends JFrame implements KeyListener {
         }
         return wordLetters;
     }
-
+    //Checks if The Word Input by Player is Valid
     public static boolean isValidWord(String word) {
-        if (word.length() != 5) {
+        if (word.length() != 5) { //Checks if Input is 5 Letter Word
             return false;
         }
 
         for (int i = 0; i < word.length(); i++) {
-            if (!java.lang.Character.isLetter(word.charAt(i))) {
+            if (!java.lang.Character.isLetter(word.charAt(i))) { //Checks if Input has Numbers
                 return false;
             }
         }
 
         for (int i = 0; i < wordList(true, word.charAt(0)).length; i++) {
-            if (word.equals(WordList.wordList(true, word.charAt(0))[i])) {
+            if (word.equals(WordList.wordList(true, word.charAt(0))[i])) { //Checks if Input is on Wordlist Based on First Letter of Word (word with first letter 'A' only checks list of 'A' words)
                 return true;
             }
         }
@@ -157,36 +157,36 @@ public class Main extends JFrame implements KeyListener {
     public static void enter() {
         System.arraycopy(wordleLetters, 0, inputLetters, 0, 26);
         if (isValidWord(cells[activeLine][0].getText() + cells[activeLine][1].getText() + cells[activeLine][2].getText() + cells[activeLine][3].getText() + cells[activeLine][4].getText())) {
-            for (int i = 0; i < cells[0].length; i++) {
+            for (int i = 0; i < cells[0].length; i++) { //Change Box to Green if Inputted Character is In Correct Spot
                 cells[activeLine][i].setBackground(Color.lightGray);
                 if (cells[activeLine][i].getText().charAt(0) == wordle.charAt(i)) {
                     cells[activeLine][i].setBackground(Color.green);
                     inputLetters[cells[activeLine][i].getText().charAt(0) - 65] -= 1;
                 }
             }
-            for (int i = 0; i < cells[0].length; i++) {
+            for (int i = 0; i < cells[0].length; i++) { //Changes Box to Yellow if Wordle Contains Inputted Character But is in Wrong Spot
                 if (inputLetters[cells[activeLine][i].getText().charAt(0) - 65] > 0 && cells[activeLine][i].getBackground() != Color.green) {
                     cells[activeLine][i].setBackground(Color.yellow);
                     inputLetters[cells[activeLine][i].getText().charAt(0) - 65] -= 1;
                 }
             }
-            if ((cells[activeLine][0].getText() + cells[activeLine][1].getText() + cells[activeLine][2].getText() + cells[activeLine][3].getText() + cells[activeLine][4].getText()).equals(wordle)) {
+            if ((cells[activeLine][0].getText() + cells[activeLine][1].getText() + cells[activeLine][2].getText() + cells[activeLine][3].getText() + cells[activeLine][4].getText()).equals(wordle)) { //Win if Input is Equal to Wordle
                 int minutes = gameTime / 60;
                 int seconds = gameTime % 60;
                 int guesses = activeLine + 1;
                 if (guesses != 1) {
-                    JOptionPane.showMessageDialog(game, String.format("You guessed the Wordle!\nYou took %d:%02d.\nYou made %d guesses.", minutes, seconds, guesses));
+                    JOptionPane.showMessageDialog(game, String.format("You guessed the Wordle!\nYou took %d:%02d.\nYou made %d guesses.", minutes, seconds, guesses)); //Winbox for More Than 1 Guess
                 } else {
-                    JOptionPane.showMessageDialog(game, String.format("You guessed the Wordle!\nYou took %d:%02d.\nYou made %d guess.", minutes, seconds, guesses));
+                    JOptionPane.showMessageDialog(game, String.format("You guessed the Wordle!\nYou took %d:%02d.\nYou made %d guess.", minutes, seconds, guesses)); //Winbox For Only 1 Guess
                 }
                 System.exit(0);
             }
             activeLine += 1;
             updateKeyboard();
         } else {
-            JOptionPane.showMessageDialog(game, "Not in word list.");
+            JOptionPane.showMessageDialog(game, "Not in word list."); //Tells Player That Input is Not in Wordlist
         }
-        if (activeLine > 5) {
+        if (activeLine > 5) {  //Loss if #of Guesses is 6 or More
             int minutes = gameTime / 60;
             int seconds = gameTime % 60;
             JOptionPane.showMessageDialog(game, String.format("The Wordle was %s\nYou took %d:%02d.", wordle, minutes, seconds));
@@ -221,7 +221,7 @@ public class Main extends JFrame implements KeyListener {
             cells[activeLine][0].setText("");
         }
     }
-
+    //Changes Color of OnScreen Keyboard Based on Characters in Input
     public static void updateKeyboard() {
         int prevLine = activeLine - 1;
         for (int i = 0; i < keys.length; i++) {
@@ -238,7 +238,7 @@ public class Main extends JFrame implements KeyListener {
             }
         }
     }
-
+    //Allows OnScreen Keyboard to be Clicked and Send Input to Game
     public static void onMouseClicked(MouseEvent mouseEvent) {
         for (int i = 0; i < keys.length; i++) {
             if (mouseEvent.getSource() == keys[i]) {
@@ -333,7 +333,7 @@ public class Main extends JFrame implements KeyListener {
             }
         }
     }
-
+    //Creates Keyboard Input
     @Override
     public void keyPressed(KeyEvent keyEvent) {
         switch (keyEvent.getKeyCode()) {
